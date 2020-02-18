@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <NoBuild>true</NoBuild>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
+    <PackageType>MSBuildSdk</PackageType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tasks\Finite.Cpp.Build.Tasks.csproj">
+      <PrivateAssets>all</PrivateAssets>
+    </ProjectReference>
+  </ItemGroup>
+
+</Project>

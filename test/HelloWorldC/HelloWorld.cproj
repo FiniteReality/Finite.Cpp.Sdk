@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Finite.Cpp.Sdk">
+
+  <PropertyGroup>
+    <RestoreSources>$(MSBuildProjectDirectory)..\..\packages</RestoreSources>
+  </PropertyGroup>
+
+  <Target Name="Build" DependsOnTargets="GetCompilerInformation">
+    <Message Text="Found compiler: %(CompilerInformation.Identity) %(CompilerInformation.Version)" />
+  </Target>
+
+</Project>
