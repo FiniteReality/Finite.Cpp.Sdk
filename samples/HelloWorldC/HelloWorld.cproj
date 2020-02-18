@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Finite.Cpp.Sdk">
+
+  <PropertyGroup>
+    <!-- Use C11 as the language version for this project -->
+    <LanguageVersion>c11</LanguageVersion>
+
+    <!-- Specify what architectures this code supports -->
+    <TargetArchitectures>x86;x64;arm7a</TargetArchitectures>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Support clang and gcc compilers with the given minimum versions -->
+    <Compiler Update="clang" Version="7.0.0" />
+    <Compiler Update="gcc" Version="9.2.0" />
+
+    <!-- Support a custom compiler/linker -->
+    <Compiler Include="myCoolCompiler" Version="1.2.3">
+      <CompilerLocation>/path/to/myCoolCompiler</CompilerLocation>
+      <LinkerLocation>/path/to/myCoolCompilerLinker</LinkerLocation>
+      <!-- Specify the parameter used to specify the C/C++ standard -->
+      <StandardVersionParameter>-coolStdVersion=$(LanguageVersion)</StandardVersionParameter>
+      <!-- Specify additional arguments -->
+      <AdditionalCompilerParameters>-cool=everything</AdditionalCompilerParameters>
+    </Compiler>
+  </ItemGroup>
+
+</Project>

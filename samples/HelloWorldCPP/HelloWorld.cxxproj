@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Finite.Cpp.Sdk">
+
+  <PropertyGroup>
+    <!-- Use C++17 as the language version for this project -->
+    <LanguageVersion>c++17</LanguageVersion>
+
+    <!-- Specify what architectures this code supports -->
+    <TargetArchitectures>x86;x64;arm7a</TargetArchitectures>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Support clang++ and g++ compilers with the given minimum versions -->
+    <Compiler Update="clang++" Version="7.0.0" />
+    <Compiler Update="g++" Version="9.2.0" />
+
+    <Compiler Update="icc">
+      <!-- Specify a custom search path for the Intel C++ compiler -->
+      <CompilerSearchPaths Condition=" '$(OS)' == 'Windows_NT' ">C:/IntelCPlusPlusCompiler/</CompilerSearchPaths>
+    </Compiler>
+
+    <!-- Support a custom compiler/linker -->
+    <Compiler Include="myCoolCompiler" Version="1.2.3">
+      <CompilerLocation>/path/to/myCoolCompiler</CompilerLocation>
+      <LinkerLocation>/path/to/myCoolCompilerLinker</LinkerLocation>
+      <!-- Specify the parameter used to specify the C/C++ standard -->
+      <StandardVersionParameter>-coolStdVersion=$(LanguageVersion)</StandardVersionParameter>
+      <!-- Specify additional arguments -->
+      <AdditionalCompilerParameters>-cool=everything</AdditionalCompilerParameters>
+    </Compiler>
+  </ItemGroup>
+
+</Project>
