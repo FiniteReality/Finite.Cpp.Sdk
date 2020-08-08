@@ -20,14 +20,4 @@
 
   <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.props" />
 
-  <PropertyGroup>
-    <!--
-      Override RestoreSources to refer to our specific packages location...
-      TODO: figure out a better way to do this
-    -->
-    <RestoreSources>
-      $(MSBuildThisFileDirectory)..\artifacts\packages\;
-    </RestoreSources>
-  </PropertyGroup>
-
 </Project>

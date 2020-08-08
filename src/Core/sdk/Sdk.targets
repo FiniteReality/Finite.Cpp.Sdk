@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project>
+<Project DefaultTargets="Build">
   <!-- Placeholder file... Content to go here soon -->
+
+  <Target Name="Build">
+    <Message Importance="High" Text="Hello, world!" />
+  </Target>
 </Project>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Finite.Cpp.Sdk">
+<Project Sdk="Finite.Cpp.Sdk/0.3.0-alpha">
 
   <PropertyGroup>
     <!-- Use C11 as the language version for this project -->
