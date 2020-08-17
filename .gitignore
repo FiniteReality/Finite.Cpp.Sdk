@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Finite.Cpp.Sdk: NuGet package cache directories for built images
+.nugetcache/
+
 # User-specific files
 *.rsuser
 *.suo
