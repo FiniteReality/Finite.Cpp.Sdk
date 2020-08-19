@@ -41,7 +41,7 @@
     <BaseOutputPath>$(BaseArtifactsPath)bin/$(BaseArtifactsPathSuffix)/</BaseOutputPath>
     <Company>FiniteReality</Company>
     <PackageOutputPath>$(BaseArtifactsPath)pkg/$(Configuration)/</PackageOutputPath>
-    <Product>Finite.Commands</Product>
+    <Product>Finite.Cpp.Sdk</Product>
     <VersionPrefix>0.3.0</VersionPrefix>
     <VersionSuffix>alpha</VersionSuffix>
   </PropertyGroup>
@@ -74,8 +74,8 @@
     <UseSharedCompilation>true</UseSharedCompilation>
   </PropertyGroup>
 
-  <!-- Package references which are consumed by all projects -->
-  <ItemGroup>
+  <!-- Package references which are consumed by all .NET SDK projects -->
+  <ItemGroup Condition="'$(UsingMicrosoftNETSdk)' == 'true'">
     <PackageReference Include="Microsoft.Net.Compilers.Toolset" IsImplicitlyDefined="true" PrivateAssets="all" />
   </ItemGroup>
 
