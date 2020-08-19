@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build">
-  <!-- Placeholder file... Content to go here soon -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <Target Name="Build">
-    <Message Importance="High" Text="Hello, world!" />
-  </Target>
+  <!--<Import Project="$(MSBuildThisFileDirectory)..\targets\Finite.Cpp.Sdk.BeforeCommon.targets" />-->
+
+  <Import Project="$(MSBuildThisFileDirectory)..\targets\Finite.Cpp.Sdk.DefaultOutputPaths.targets" />
+
+  <PropertyGroup Condition="'$(LanguageTargets)' == ''">
+    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.cproj'">$(MSBuildThisFileDirectory)..\targets\Finite.Cpp.Sdk.C.targets</LanguageTargets>
+    <LanguageTargets Condition="'$(MSBuildProjectExtension)' == '.cxxproj'">$(MSBuildThisFileDirectory)..\targets\Finite.Cpp.Sdk.CXX.targets</LanguageTargets>
+  </PropertyGroup>
+
+  <Import Project="$(LanguageTargets)" />
+
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft.Common.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)..\targets\Finite.Cpp.Sdk.targets" />
+
+  <PropertyGroup Condition="'$(ImportNuGetBuildTasksPackTargetsFromSdk)' != 'false'">
+    <ImportNuGetBuildTasksPackTargetsFromSdk>true</ImportNuGetBuildTasksPackTargetsFromSdk>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildExtensionsPath)\Sdks\NuGet.Build.Tasks.Pack\build\NuGet.Build.Tasks.Pack.targets"
+    Condition="'$(ImportNuGetBuildTasksPackTargetsFromSdk)' == 'true'" />
+
 </Project>

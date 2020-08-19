@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project>
-  <!-- Placeholder file... Content to go here soon -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <UsingFiniteCppSdk>true</UsingFiniteCppSdk>
+    <UsingFiniteCppSdkDefaults>true</UsingFiniteCppSdkDefaults>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" />
+  <Import Project="$(MSBuildThisFileDirectory)..\targets\Finite.Cpp.Sdk.props" />
+
 </Project>

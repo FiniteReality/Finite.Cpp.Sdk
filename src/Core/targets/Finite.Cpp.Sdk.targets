@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <!-- C/C++ projects cannot produce .NET reference assemblies -->
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)Finite.Cpp.Sdk.DefaultItems.targets" />
+
+  <!-- Needed by Microsoft.Common.CurrentVersion.targets -->
+  <Target Name="CreateManifestResourceNames" />
+
+</Project>

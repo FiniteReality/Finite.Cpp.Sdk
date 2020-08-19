@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <DefaultProjectTypeGuid Condition="'$(DefaultProjectTypeGuid)' == ''">{777B85CC-1368-4511-B971-867BABC9623A}</DefaultProjectTypeGuid>
+    <DefaultLanguageSourceExtension>.cpp</DefaultLanguageSourceExtension>
+    <Language>CXX</Language>
+    <TargetRuntime>Unmanaged</TargetRuntime>
+  </PropertyGroup>
+
+</Project>
