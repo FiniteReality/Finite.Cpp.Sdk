@@ -17,6 +17,7 @@
 
     <ItemGroup>
       <IntermediateOutput Include="@(Compile->'$(IntermediateOutputPath)%(Identity).o')" />
+      <FileWrites Include="@(IntermediateOutput)" />
     </ItemGroup>
 
     <Exec Command="clang @(IntermediateOutput, ' ') -o $(IntermediateOutputPath)$(AssemblyName)$(TargetExt)" />
