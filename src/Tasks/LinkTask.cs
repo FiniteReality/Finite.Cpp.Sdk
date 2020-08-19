@@ -10,13 +10,6 @@ namespace Finite.Cpp.Sdk
     public class LinkTask : Task
     {
         /// <summary>
-        /// Gets or sets the linker to use, along with any required
-        /// parameters necessary to support the input files.
-        /// </summary>
-        [Required]
-        public ITaskItem Linker { get; set; } = null!;
-
-        /// <summary>
         /// Gets or sets the libraries to link against while linking the input
         /// object files.
         /// </summary>

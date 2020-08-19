@@ -11,13 +11,6 @@ namespace Finite.Cpp.Sdk
     public class CompileTask : Task
     {
         /// <summary>
-        /// Gets or sets the compiler to use, along with any required
-        /// parameters necessary to support the input file.
-        /// </summary>
-        [Required]
-        public ITaskItem Compiler { get; set; } = null!;
-
-        /// <summary>
         /// Gets or sets the include directories to use while compiling the
         /// input file.
         /// </summary>
