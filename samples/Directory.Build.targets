@@ -18,9 +18,4 @@
 
   <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.targets" />
 
-  <Target Name="ClearNuGetCache" AfterTargets="Build">
-    <Message Importance="High" Text="Clearing isolated NuGet cache..." />
-    <RemoveDir Directories="$(MSBuildThisFileDirectory)\.nugetcache" />
-  </Target>
-
 </Project>
