@@ -16,6 +16,9 @@
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileDirectory)..\Directory.Build.props</MSBuildAllProjects>
     <FiniteCppSdkProjectCategory>samples</FiniteCppSdkProjectCategory>
+
+    <!-- Skip invalid configurations (i.e. missing OutputPath properties) to aid in debugging-->
+    <SkipInvalidConfigurations>true</SkipInvalidConfigurations>
   </PropertyGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.props" />
