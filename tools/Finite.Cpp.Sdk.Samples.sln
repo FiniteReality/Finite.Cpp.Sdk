@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26124.0
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{F696B764-8749-4125-AB65-AF945699AF34}") = "HelloWorld", "..\samples\HelloWorldC\HelloWorld.cproj", "{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Native = Debug|Native
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Native = Release|Native
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}.Debug|Native.ActiveCfg = Debug|Native
+		{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}.Debug|Native.Build.0 = Debug|Native
+		{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}.Debug|x64.ActiveCfg = Debug|Native
+		{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}.Debug|x64.Build.0 = Debug|Native
+		{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}.Debug|x86.ActiveCfg = Debug|Native
+		{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}.Debug|x86.Build.0 = Debug|Native
+		{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}.Release|Native.ActiveCfg = Debug|Native
+		{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}.Release|Native.Build.0 = Debug|Native
+		{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}.Release|x64.ActiveCfg = Debug|Native
+		{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}.Release|x64.Build.0 = Debug|Native
+		{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}.Release|x86.ActiveCfg = Debug|Native
+		{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}.Release|x86.Build.0 = Debug|Native
+	EndGlobalSection
+EndGlobal
