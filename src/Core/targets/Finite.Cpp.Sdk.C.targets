@@ -4,23 +4,42 @@
   <PropertyGroup>
     <DefaultProjectTypeGuid Condition="'$(DefaultProjectTypeGuid)' == ''">{F696B764-8749-4125-AB65-AF945699AF34}</DefaultProjectTypeGuid>
     <DefaultLanguageSourceExtension>.c</DefaultLanguageSourceExtension>
+    <DefaultIntermediateExtension>.o</DefaultIntermediateExtension>
     <Language>C</Language>
     <TargetRuntime>Unmanaged</TargetRuntime>
   </PropertyGroup>
 
+  <ItemGroup>
+    <CoreCompileOutput Include="@(Compile->'$(IntermediateOutputPath)%(Identity)$(DefaultIntermediateExtension)')" />
+  </ItemGroup>
+
   <Target Name="CoreCompile"
     Inputs="$(MSBuildAllProjects);@(Compile);"
-    Outputs="@(IntermediateOutput);$(IntermediateOutputPath)$(AssemblyName)$(TargetExt)">
-
-    <Exec Command="clang -c %(Compile.FullPath) -o $(IntermediateOutputPath)%(Compile.Identity).o" />
-    <Message Importance="High" Text="%(Compile.Identity) -> $(IntermediateOutputPath)%(Compile.Identity).o" />
+    Outputs="@(CoreCompileOutput)">
 
     <ItemGroup>
-      <IntermediateOutput Include="@(Compile->'$(IntermediateOutputPath)%(Identity).o')" />
-      <FileWrites Include="@(IntermediateOutput)" />
+      <_ItemsToCompile Include="@(Compile)">
+        <OutputFile>$(IntermediateOutputPath)%(Identity)$(DefaultIntermediateExtension)</OutputFile>
+      </_ItemsToCompile>
     </ItemGroup>
 
-    <Exec Command="clang @(IntermediateOutput, ' ') -o $(IntermediateOutputPath)$(AssemblyName)$(TargetExt)" />
+    <Exec Command="clang -c %(_ItemsToCompile.FullPath) -o %(_ItemsToCompile.OutputFile)" />
+
+    <ItemGroup>
+      <FileWrites Include="@(CoreCompileOutput)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="CoreLink"
+    DependsOnTargets="CoreCompile"
+    Inputs="$(MSBuildAllProjects);@(CoreCompileOutput)"
+    Outputs="@(IntermediateAssembly)">
+
+    <Exec Command="clang @(CoreCompileOutput, ' ') -o @(IntermediateAssembly)" />
+
+    <ItemGroup>
+      <FileWrites Include="@(IntermediateAssembly)" />
+    </ItemGroup>
   </Target>
 
 </Project>

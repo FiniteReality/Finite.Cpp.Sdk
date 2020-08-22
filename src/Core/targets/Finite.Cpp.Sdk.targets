@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <!--
+    Microsoft.Common.CurrentVersion.targets defines Windows variants of these.
+    Since we're overriding them, we have to make sure they weren't
+    intentionally overriden beforehand.
+  -->
+  <PropertyGroup Condition="'$(_OverridenTargetExt)' != 'true' and '$(OS)' == 'OSX'">
+    <TargetExt Condition="'$(OutputType)' == 'exe'"></TargetExt>
+    <TargetExt Condition="'$(OutputType)' == 'library'">.dylib</TargetExt>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(_OverridenTargetExt)' != 'true' and '$(OS)' == 'Unix'">
+    <TargetExt Condition="'$(OutputType)' == 'exe'"></TargetExt>
+    <TargetExt Condition="'$(OutputType)' == 'library'">.so</TargetExt>
+  </PropertyGroup>
+
   <PropertyGroup>
     <!-- C/C++ projects cannot produce .NET reference assemblies -->
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
@@ -10,5 +25,42 @@
 
   <!-- Needed by Microsoft.Common.CurrentVersion.targets -->
   <Target Name="CreateManifestResourceNames" />
+
+  <PropertyGroup>
+    <CompileDependsOn>
+      $(CompileDependsOn)
+      BeforeLink;
+      <!--_TimeStampBeforeLink;-->
+      _GenerateLinkDependencyCache;
+      CoreLink;
+      <!--_TimeStampAfterLink;-->
+      AfterLink;
+    </CompileDependsOn>
+  </PropertyGroup>
+
+  <Target Name="BeforeLink" />
+
+  <Target Name="AfterLink" />
+
+  <Target Name="_GenerateLinkDependencyCache" Condition="'$(DesignTimeBuild)' != 'true' and '$(BuildingProject)' == 'true'" DependsOnTargets="ResolveAssemblyReferences">
+    <ItemGroup>
+      <CustomAdditionalLinkInputs Include="$(IntermediateOutputPath)$(MSBuildProjectFile).CoreLinkInputs.cache" />
+      <CoreLinkCache Include="@(CoreCompileOutput)" />
+      <CoreLinkCache Include="@(ReferencePath)" />
+      <CoreLinkCache Include="$(DefineConstants)" />
+    </ItemGroup>
+
+    <Hash
+      ItemsToHash="@(CoreLinkCache)"
+      IgnoreCase="$([MSBuild]::ValueOrDefault(`$(CoreLinkCacheIgnoreCase)`, `true`))">
+      <Output TaskParameter="HashResult" PropertyName="CoreLinkDependencyHash" />
+    </Hash>
+
+    <WriteLinesToFile Lines="$(CoreLinkDependencyHash)" File="$(IntermediateOutputPath)$(MSBuildProjectFile).CoreLinkInputs.cache" Overwrite="True" WriteOnlyWhenDifferent="True" />
+
+    <ItemGroup>
+      <FileWrites Include="$(IntermediateOutputPath)$(MSBuildProjectFile).CoreLinkInputs.cache" />
+    </ItemGroup>
+  </Target>
 
 </Project>

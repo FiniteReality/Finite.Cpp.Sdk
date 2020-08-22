@@ -30,8 +30,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="sdk/**/*" Pack="true" PackagePath="Sdk" />
-    <None Include="targets/**/*" Pack="true" PackagePath="targets" />
+    <None Include="sdk\**\*" Pack="true" PackagePath="Sdk" />
+    <None Include="targets\**\*" Pack="true" PackagePath="targets" />
   </ItemGroup>
 
   <ItemGroup>
@@ -61,5 +61,9 @@
   </Target>
 
   <Target Name="_GetBuildOutputFilesWithTfm">
+  </Target>
+
+  <Target Name="ClearNuGetCache" AfterTargets="AfterBuild">
+    <RemoveDir Directories="$(BaseArtifactsPath)\nugetcache" />
   </Target>
 </Project>

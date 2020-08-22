@@ -5,4 +5,17 @@
     <EnableDefaultItems Condition="'$(EnableDefaultItems)' == ''">true</EnableDefaultItems>
   </PropertyGroup>
 
+  <!-- Default item excludes from Microsoft.NET.Sdk.DefaultItems.targets -->
+  <PropertyGroup>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(BaseOutputPath)/**</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(BaseIntermediateOutputPath)/**</DefaultItemExcludes>
+
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/*.user</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/*.*proj</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/*.sln</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/*.vssscc</DefaultItemExcludes>
+
+    <DefaultExcludesInProjectFolder>$(DefaultItemExcludesInProjectFolder);**/.*/**</DefaultExcludesInProjectFolder>
+  </PropertyGroup>
+
 </Project>

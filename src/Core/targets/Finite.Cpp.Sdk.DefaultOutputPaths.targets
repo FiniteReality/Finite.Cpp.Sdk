@@ -8,8 +8,10 @@
     <PlatformName Condition="'$(PlatformName)' == ''">$(Platform)</PlatformName>
   </PropertyGroup>
 
-  <!-- Specify default output paths -->
-  <!-- These must all have a trailing slash (see Microsoft.Net.DefaultOutputPaths.targets) -->
+  <!--
+    Specify default output paths - These must all have a trailing slash. (see
+    Microsoft.Net.DefaultOutputPaths.targets)
+  -->
   <PropertyGroup>
     <BaseOutputPath Condition="'$(BaseOutputPath)' == ''">bin\</BaseOutputPath>
     <BaseOutputPath Condition="!HasTrailingSlash('$(BaseOutputPath)')">$(BaseOutputPath)\</BaseOutputPath>

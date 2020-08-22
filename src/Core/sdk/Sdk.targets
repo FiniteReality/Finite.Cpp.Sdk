@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <!--<Import Project="$(MSBuildThisFileDirectory)..\targets\Finite.Cpp.Sdk.BeforeCommon.targets" />-->
-
   <Import Project="$(MSBuildThisFileDirectory)..\targets\Finite.Cpp.Sdk.DefaultOutputPaths.targets" />
 
   <PropertyGroup Condition="'$(LanguageTargets)' == ''">
@@ -11,6 +9,17 @@
   </PropertyGroup>
 
   <Import Project="$(LanguageTargets)" />
+
+  <!--
+    If the language targets, or anybody else, overwrites TargetExt before us,
+    we need to track that since we overwrite this extension in
+    Finite.Cpp.Sdk.targets. This should let us add a condition which doesn't
+    get confused by Microsoft.Common.props' defaults for this property, while
+    still allowing users to specify custom defaults.
+  -->
+  <PropertyGroup>
+    <_OverridenTargetExt Condition="'$(TargetExt)' != ''">true</_OverridenTargetExt>
+  </PropertyGroup>
 
   <Import Project="$(MSBuildExtensionsPath)\Microsoft.Common.targets" />
   <Import Project="$(MSBuildThisFileDirectory)..\targets\Finite.Cpp.Sdk.targets" />
