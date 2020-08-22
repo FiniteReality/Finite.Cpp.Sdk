@@ -9,37 +9,4 @@
     <TargetRuntime>Unmanaged</TargetRuntime>
   </PropertyGroup>
 
-  <ItemGroup>
-    <CoreCompileOutput Include="@(Compile->'$(IntermediateOutputPath)%(Identity)$(DefaultIntermediateExtension)')" />
-  </ItemGroup>
-
-  <Target Name="CoreCompile"
-    Inputs="$(MSBuildAllProjects);@(Compile);"
-    Outputs="@(CoreCompileOutput)">
-
-    <ItemGroup>
-      <_ItemsToCompile Include="@(Compile)">
-        <OutputFile>$(IntermediateOutputPath)%(Identity)$(DefaultIntermediateExtension)</OutputFile>
-      </_ItemsToCompile>
-    </ItemGroup>
-
-    <Exec Command="clang -c %(_ItemsToCompile.FullPath) -o %(_ItemsToCompile.OutputFile)" />
-
-    <ItemGroup>
-      <FileWrites Include="@(CoreCompileOutput)" />
-    </ItemGroup>
-  </Target>
-
-  <Target Name="CoreLink"
-    DependsOnTargets="CoreCompile"
-    Inputs="$(MSBuildAllProjects);@(CoreCompileOutput)"
-    Outputs="@(IntermediateAssembly)">
-
-    <Exec Command="clang @(CoreCompileOutput, ' ') -o @(IntermediateAssembly)" />
-
-    <ItemGroup>
-      <FileWrites Include="@(IntermediateAssembly)" />
-    </ItemGroup>
-  </Target>
-
 </Project>

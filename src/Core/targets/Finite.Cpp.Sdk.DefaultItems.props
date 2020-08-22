@@ -2,7 +2,9 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'true'">
-    <Compile Include="**/*$(DefaultLanguageSourceExtension)" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)"/>
+    <Compile Include="**/*$(DefaultLanguageSourceExtension)" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)">
+      <_LinkOutputName>$(IntermediateOutputPath)%(Filename)$(DefaultIntermediateExtension)</_LinkOutputName>
+    </Compile>
   </ItemGroup>
 
 </Project>

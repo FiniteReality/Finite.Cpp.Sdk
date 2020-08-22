@@ -38,6 +38,31 @@
     </CompileDependsOn>
   </PropertyGroup>
 
+  <Target Name="CoreCompile"
+    Inputs="$(MSBuildAllProjects);@(Compile);"
+    Outputs="@(Compile->'%(_LinkOutputName)')">
+
+    <ClangCompile
+      OutputDirectory="$(IntermediateOutputPath)"
+      OutputFileExtension="$(DefaultIntermediateExtension)"
+      SourceFile="%(Compile.FullPath)">
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+      <Output TaskParameter="OutputFile" ItemName="Link" />
+    </ClangCompile>
+  </Target>
+
+  <Target Name="CoreLink"
+    DependsOnTargets="CoreCompile"
+    Inputs="$(MSBuildAllProjects);@(Link)"
+    Outputs="@(IntermediateAssembly)">
+
+    <Exec Command="clang @(Link, ' ') -o @(IntermediateAssembly)" />
+
+    <ItemGroup>
+      <FileWrites Include="@(IntermediateAssembly)" />
+    </ItemGroup>
+  </Target>
+
   <Target Name="BeforeLink" />
 
   <Target Name="AfterLink" />
@@ -45,7 +70,7 @@
   <Target Name="_GenerateLinkDependencyCache" Condition="'$(DesignTimeBuild)' != 'true' and '$(BuildingProject)' == 'true'" DependsOnTargets="ResolveAssemblyReferences">
     <ItemGroup>
       <CustomAdditionalLinkInputs Include="$(IntermediateOutputPath)$(MSBuildProjectFile).CoreLinkInputs.cache" />
-      <CoreLinkCache Include="@(CoreCompileOutput)" />
+      <CoreLinkCache Include="@(Link)" />
       <CoreLinkCache Include="@(ReferencePath)" />
       <CoreLinkCache Include="$(DefineConstants)" />
     </ItemGroup>
