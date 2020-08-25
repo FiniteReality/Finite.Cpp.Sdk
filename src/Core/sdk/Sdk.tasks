@@ -2,5 +2,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <UsingTask TaskName="Finite.Cpp.Sdk.ClangCompile" AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net5.0\Finite.Cpp.Build.Tasks.dll" />
+  <UsingTask TaskName="Finite.Cpp.Sdk.ClangLink" AssemblyFile="$(MSBuildThisFileDirectory)..\tools\net5.0\Finite.Cpp.Build.Tasks.dll" />
 
 </Project>

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
@@ -9,16 +8,10 @@ using Microsoft.Build.Utilities;
 namespace Finite.Cpp.Sdk
 {
     /// <summary>
-    /// Compiles an input C or C++ source file into an object file suitable for
-    /// linking.
+    /// Links one or more C/C++ object files into an application or library.
     /// </summary>
-    public class ClangCompile : ToolTask
+    public class ClangLink : ToolTask
     {
-        /// <summary>
-        /// Gets or sets the include directories to use.
-        /// </summary>
-        public ITaskItem[] IncludeDirectories { get; set; } = null!;
-
         /// <summary>
         /// Gets or sets the library type if <see cref="OutputType"/> is a
         /// library.
@@ -26,13 +19,18 @@ namespace Finite.Cpp.Sdk
         public string LibraryType { get; set; } = null!;
 
         /// <summary>
-        /// Gets or sets the output file directory after compilation, if
+        /// Gets or sets the libraries to link to.
+        /// </summary>
+        public ITaskItem[] LinkLibraries { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or sets the output file directory after linking, if
         /// <see cref="OutputFile"/> is <c>null</c>.
         /// </summary>
         public string OutputDirectory { get; set; } = null!;
 
         /// <summary>
-        /// Gets or sets the output file after compilation.
+        /// Gets or sets the output file after linking.
         /// </summary>
         [Output]
         public ITaskItem OutputFile { get; set; } = null!;
@@ -50,11 +48,10 @@ namespace Finite.Cpp.Sdk
         public string OutputType { get; set; } = null!;
 
         /// <summary>
-        /// Gets or sets the input file to compile.
+        /// Gets or sets the input file to link.
         /// </summary>
         [Required]
-        public ITaskItem SourceFile { get; set; } = null!;
-
+        public ITaskItem[] SourceFiles { get; set; } = null!;
 
         /// <inheritdoc />
         protected override string ToolName => "clang";
@@ -62,13 +59,21 @@ namespace Finite.Cpp.Sdk
         /// <inheritdoc />
         protected override string GenerateCommandLineCommands()
         {
-            if (OutputFile == null && OutputFileExtension != null)
+            if (OutputFile == null)
             {
+                if (OutputDirectory == null)
+                {
+                    Log.LogError(
+                        "Either OutputFile or OutputDirectory needs to be " +
+                        "set");
+                    return null!;
+                }
+
                 OutputFile = new TaskItem(
                     Path.ChangeExtension(
                         Path.Combine(
                             OutputDirectory,
-                            Path.GetFileName(SourceFile.ItemSpec)),
+                            Path.GetFileName(SourceFiles[0].ItemSpec)),
                         OutputFileExtension));
 
                 Log.LogMessage($"OutputFile = {OutputFile}");
@@ -76,16 +81,14 @@ namespace Finite.Cpp.Sdk
 
             var builder = new CommandLineBuilder();
 
-            builder.AppendSwitchIfNotNull("--include-directory",
-                IncludeDirectories, " ");
-
             switch (OutputType)
             {
                 case "library" when LibraryType == "shared":
+                    builder.AppendSwitch("-shared");
                     builder.AppendSwitch("-fPIC");
                     break;
                 case "library" when LibraryType == "static":
-                    //builder.AppendSwitch("-static");
+                    builder.AppendSwitch("-static");
                     break;
 
                 case "library":
@@ -100,9 +103,26 @@ namespace Finite.Cpp.Sdk
                     return null!;
             }
 
-            builder.AppendSwitch("--compile");
-            builder.AppendFileNameIfNotNull(SourceFile);
+            builder.AppendFileNamesIfNotNull(SourceFiles, " ");
+
+            if (LinkLibraries != null)
+            {
+                foreach (var directory in LinkLibraries)
+                {
+                    if (directory == null)
+                        continue;
+
+                    var fullPath = directory.ItemSpec;
+
+                    builder.AppendSwitchIfNotNull("-L",
+                        Path.GetDirectoryName(fullPath));
+                    builder.AppendSwitchIfNotNull("-l:",
+                        Path.GetFileName(fullPath));
+                }
+            }
+
             builder.AppendSwitchIfNotNull("--output=", OutputFile);
+            builder.AppendSwitchIfNotNull("-rpath ", "$ORIGIN");
 
             return builder.ToString();
         }
@@ -130,7 +150,7 @@ namespace Finite.Cpp.Sdk
 
 
             throw new NotImplementedException(
-                $"{nameof(ClangCompile)} is not implemented for " +
+                $"{nameof(ClangLink)} is not implemented for " +
                 $"{RuntimeInformation.OSDescription}.");
         }
 

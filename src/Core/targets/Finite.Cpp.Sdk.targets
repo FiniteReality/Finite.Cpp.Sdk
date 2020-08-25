@@ -1,19 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <PropertyGroup Condition="'$(OutputType)' == 'library'">
+    <LibraryType Condition="'$(LibraryType)' == ''">shared</LibraryType>
+  </PropertyGroup>
+
   <!--
-    Microsoft.Common.CurrentVersion.targets defines Windows variants of these.
-    Since we're overriding them, we have to make sure they weren't
-    intentionally overriden beforehand.
+    Since we're overriding Microsoft.Common.CurrentVersion.targets, we have to
+    check that the user didn't intentionally override them beforehand somehow.
+    $(_OverridenTargetExt) will be true if TargetExt was set *before* importing
+    Microsoft.Common.CurrentVersion.targets
   -->
+  <PropertyGroup Condition="'$(_OverridenTargetExt)' != 'true' and '$(OS)' == 'Windows_NT'">
+    <TargetExt Condition="'$(OutputType)' == 'exe'">.exe</TargetExt>
+    <TargetExt Condition="'$(OutputType)' == 'library' and '$(LibraryType)' == 'shared'">.dll</TargetExt>
+    <TargetExt Condition="'$(OutputType)' == 'library' and '$(LibraryType)' == 'static'">.lib</TargetExt>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(_OverridenTargetExt)' != 'true' and '$(OS)' == 'OSX'">
     <TargetExt Condition="'$(OutputType)' == 'exe'"></TargetExt>
-    <TargetExt Condition="'$(OutputType)' == 'library'">.dylib</TargetExt>
+    <TargetExt Condition="'$(OutputType)' == 'library' and '$(LibraryType)' == 'shared'">.dylib</TargetExt>
+    <TargetExt Condition="'$(OutputType)' == 'library' and '$(LibraryType)' == 'static'">.a</TargetExt>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(_OverridenTargetExt)' != 'true' and '$(OS)' == 'Unix'">
     <TargetExt Condition="'$(OutputType)' == 'exe'"></TargetExt>
-    <TargetExt Condition="'$(OutputType)' == 'library'">.so</TargetExt>
+    <TargetExt Condition="'$(OutputType)' == 'library' and '$(LibraryType)' == 'shared'">.so</TargetExt>
+    <TargetExt Condition="'$(OutputType)' == 'library' and '$(LibraryType)' == 'static'">.a</TargetExt>
+  </PropertyGroup>
+
+  <!--
+    Update properties which would otherwise be set by
+    Microsoft.Common.CurrentVersion.targets based on the target extension.
+    If the user has overridden the target extension somehow, we bail out and
+    assume they've updated TargetFileName/TargetPath as appropriate.
+  -->
+  <PropertyGroup Condition="'$(_OverridenTargetExt)' != 'true'">
+    <TargetFileName>$(TargetName)$(TargetExt)</TargetFileName>
+    <TargetPath>$(TargetDir)$(TargetFileName)</TargetPath>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -40,14 +64,16 @@
 
   <Target Name="CoreCompile"
     Inputs="$(MSBuildAllProjects);@(Compile);"
-    Outputs="@(Compile->'%(_LinkOutputName)')">
+    Outputs="@(Link)">
 
     <ClangCompile
+      IncludeDirectories="@(IncludeDirectories)"
+      LibraryType="$(LibraryType)"
       OutputDirectory="$(IntermediateOutputPath)"
       OutputFileExtension="$(DefaultIntermediateExtension)"
+      OutputType="$(OutputType)"
       SourceFile="%(Compile.FullPath)">
       <Output TaskParameter="OutputFile" ItemName="FileWrites" />
-      <Output TaskParameter="OutputFile" ItemName="Link" />
     </ClangCompile>
   </Target>
 
@@ -56,11 +82,16 @@
     Inputs="$(MSBuildAllProjects);@(Link)"
     Outputs="@(IntermediateAssembly)">
 
-    <Exec Command="clang @(Link, ' ') -o @(IntermediateAssembly)" />
-
-    <ItemGroup>
-      <FileWrites Include="@(IntermediateAssembly)" />
-    </ItemGroup>
+    <ClangLink
+      LibraryType="$(LibraryType)"
+      LinkLibraries="@(ReferencePath)"
+      OutputDirectory="$(IntermediateOutputPath)"
+      OutputFile="@(IntermediateAssembly)"
+      OutputFileExtension="$(TargetExt)"
+      OutputType="$(OutputType)"
+      SourceFiles="@(Link)">
+      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+    </ClangLink>
   </Target>
 
   <Target Name="BeforeLink" />
