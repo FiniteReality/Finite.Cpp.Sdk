@@ -97,7 +97,14 @@
       OutputType="$(OutputType)"
       SourceFiles="@(Link)">
       <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+      <Output TaskParameter="OutputFiles" ItemName="FileWrites" />
+      <Output TaskParameter="OutputFiles" ItemName="_LinkOutputs" />
     </ClangLink>
+
+    <ItemGroup>
+      <DebugSymbolsProjectOutputGroup Include="@(_LinkOutputs)" Condition="'%(_LinkOutputs.Extension)' == '.pdb'" />
+      <IntermediateAssembly Include="@(_LinkOutputs)" Condition="'%(_LinkOutputs.Extension)' == '.lib'" />
+    </ItemGroup>
   </Target>
 
   <Target Name="BeforeLink" />

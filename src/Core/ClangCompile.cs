@@ -103,7 +103,8 @@ namespace Finite.Cpp.Build.Tasks
             switch (OutputType)
             {
                 case "library" when LibraryType == "shared":
-                    builder.AppendSwitch("-fPIC");
+                    if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        builder.AppendSwitch("-fPIC");
                     break;
                 case "library" when LibraryType == "static":
                     //builder.AppendSwitch("-static");
@@ -127,6 +128,9 @@ namespace Finite.Cpp.Build.Tasks
             if (Optimize && OptimizeLevel > 0)
                 builder.AppendSwitchIfNotNull(
                     $"--optimize=", OptimizeLevel.ToString());
+
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                builder.AppendSwitch("-fvisibility=hidden");
 
             builder.AppendSwitch("--compile");
             builder.AppendFileNameIfNotNull(SourceFile);
@@ -154,6 +158,30 @@ namespace Finite.Cpp.Build.Tasks
 
                 Log.LogError($"Could not find {ToolName} executable");
                 return null!;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                foreach (var install in ToolLocationHelper.GetFoldersInVSInstalls())
+                {
+                    var fullPath = Path.Combine(install, "VC", "Tools", "Llvm", "bin", $"{ToolName}.exe");
+
+                    Log.LogMessage(
+                        $"Searching {fullPath} for {ToolName} executable");
+
+                    if (File.Exists(fullPath))
+                        return fullPath;
+                }
+
+                foreach (var location in PathHelper.GetCurrentPathEntries())
+                {
+                    var fullPath = Path.Combine(location, $"{ToolName}.exe");
+
+                    Log.LogMessage(
+                        $"Searching {fullPath} for {ToolName} executable");
+
+                    if (File.Exists(fullPath))
+                        return fullPath;
+                }
             }
 
 

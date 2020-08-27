@@ -57,6 +57,12 @@ namespace Finite.Cpp.Build.Tasks
         public ITaskItem OutputFile { get; set; } = null!;
 
         /// <summary>
+        /// Gets or sets the additional output files after compilation.
+        /// </summary>
+        [Output]
+        public ITaskItem[] OutputFiles { get; set; } = null!;
+
+        /// <summary>
         /// Gets or sets the output file extension, if <see cref="OutputFile"/>
         /// is <c>null</c>.
         /// </summary>
@@ -76,6 +82,33 @@ namespace Finite.Cpp.Build.Tasks
 
         /// <inheritdoc />
         protected override string ToolName => "clang";
+
+        /// <inheritdoc/>
+        protected override int ExecuteTool(string pathToTool, string responseFileCommands, string commandLineCommands)
+        {
+            var result = base.ExecuteTool(pathToTool, responseFileCommands, commandLineCommands);
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                OutputFiles = new[]
+                {
+                    new TaskItem(Path.ChangeExtension(OutputFile.ItemSpec, "lib"),
+                        new Dictionary<string, string>
+                        {
+                            ["CopyToOutput"] = "true"
+                        }),
+                    new TaskItem(Path.ChangeExtension(OutputFile.ItemSpec, "pdb"),
+                        new Dictionary<string, string>
+                        {
+                            ["CopyToOutput"] = "true"
+                        }),
+                    new TaskItem(Path.ChangeExtension(OutputFile.ItemSpec, "ilk")),
+                    new TaskItem(Path.ChangeExtension(OutputFile.ItemSpec, "exp"))
+                };
+            }
+
+            return result;
+        }
 
         /// <inheritdoc />
         protected override string GenerateCommandLineCommands()
@@ -106,7 +139,10 @@ namespace Finite.Cpp.Build.Tasks
             {
                 case "library" when LibraryType == "shared":
                     builder.AppendSwitch("-shared");
-                    builder.AppendSwitch("-fPIC");
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        builder.AppendSwitch("-mdll");
+                    else
+                        builder.AppendSwitch("-fPIC");
                     break;
                 case "library" when LibraryType == "static":
                     builder.AppendSwitch("-static");
@@ -124,21 +160,41 @@ namespace Finite.Cpp.Build.Tasks
                     return null!;
             }
 
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                builder.AppendSwitch("-fvisibility=hidden");
+
             builder.AppendFileNamesIfNotNull(SourceFiles, " ");
 
             if (LinkLibraries != null)
             {
-                foreach (var directory in LinkLibraries)
+                foreach (var linkLibrary in LinkLibraries)
                 {
-                    if (directory == null)
+                    if (linkLibrary == null)
                         continue;
 
-                    var fullPath = directory.ItemSpec;
-
                     builder.AppendSwitchIfNotNull("-L",
-                        Path.GetDirectoryName(fullPath));
-                    builder.AppendSwitchIfNotNull("-l:",
-                        Path.GetFileName(fullPath));
+                        Path.GetDirectoryName(linkLibrary.ItemSpec));
+
+                    /*
+                      N.B. Since we're passed the output, we need to rename to
+                      .lib on windows.
+
+                      Additionally, the presence/lack of a colon in `-l` is
+                      important - this parameter is effectively passed directly
+                      to the system linker which has different behaviour on
+                      windows versus linux: the colon tells linux that we're
+                      looking for a specific filename, while Windows expects
+                      that we're passing a filename anyway, so a colon would
+                      cause it to look for that in the filename.
+                    */
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                        builder.AppendSwitchIfNotNull("-l",
+                            Path.GetFileName(
+                                Path.ChangeExtension(
+                                    linkLibrary.ItemSpec, "lib")));
+                    else
+                        builder.AppendSwitchIfNotNull("-l:",
+                            Path.GetFileName(linkLibrary.ItemSpec));
                 }
             }
 
@@ -150,7 +206,9 @@ namespace Finite.Cpp.Build.Tasks
                     $"--optimize=", OptimizeLevel.ToString());
 
             builder.AppendSwitchIfNotNull("--output=", OutputFile);
-            builder.AppendSwitchIfNotNull("-rpath ", "$ORIGIN");
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                builder.AppendSwitchIfNotNull("-rpath ", "$ORIGIN");
 
             return builder.ToString();
         }
@@ -174,6 +232,30 @@ namespace Finite.Cpp.Build.Tasks
 
                 Log.LogError($"Could not find {ToolName} executable");
                 return null!;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                foreach (var install in ToolLocationHelper.GetFoldersInVSInstalls())
+                {
+                    var fullPath = Path.Combine(install, "VC", "Tools", "Llvm", "bin", $"{ToolName}.exe");
+
+                    Log.LogMessage(
+                        $"Searching {fullPath} for {ToolName} executable");
+
+                    if (File.Exists(fullPath))
+                        return fullPath;
+                }
+
+                foreach (var location in PathHelper.GetCurrentPathEntries())
+                {
+                    var fullPath = Path.Combine(location, $"{ToolName}.exe");
+
+                    Log.LogMessage(
+                        $"Searching {fullPath} for {ToolName} executable");
+
+                    if (File.Exists(fullPath))
+                        return fullPath;
+                }
             }
 
 
