@@ -23,7 +23,7 @@
     <_OverridenTargetExt Condition="'$(TargetExt)' != ''">true</_OverridenTargetExt>
   </PropertyGroup>
 
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft.Common.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
   <Import Project="$(MSBuildThisFileDirectory)..\targets\Finite.Cpp.Sdk.targets" />
 
 </Project>
