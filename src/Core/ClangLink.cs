@@ -160,7 +160,7 @@ namespace Finite.Cpp.Sdk
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                foreach (var location in GetLinuxSearchPaths())
+                foreach (var location in PathHelper.GetLinuxSearchPaths())
                 {
                     var fullPath = Path.Combine(location, ToolName);
 
@@ -180,23 +180,6 @@ namespace Finite.Cpp.Sdk
             throw new NotImplementedException(
                 $"{nameof(ClangLink)} is not implemented for " +
                 $"{RuntimeInformation.OSDescription}.");
-        }
-
-        private static IEnumerable<string> GetLinuxSearchPaths()
-        {
-            yield return "/usr/local/bin";
-            yield return "/usr/bin";
-            yield return "/bin";
-            yield return "/usr/local/sbin";
-            yield return "/usr/sbin";
-            yield return "/sbin";
-
-            var additionalPaths = Environment.GetEnvironmentVariable("PATH")
-                ?.Split(':', StringSplitOptions.RemoveEmptyEntries)
-                ?? Array.Empty<string>();
-
-            foreach (var path in additionalPaths)
-                yield return path;
         }
     }
 }
