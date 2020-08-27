@@ -26,11 +26,4 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft.Common.targets" />
   <Import Project="$(MSBuildThisFileDirectory)..\targets\Finite.Cpp.Sdk.targets" />
 
-  <PropertyGroup Condition="'$(ImportNuGetBuildTasksPackTargetsFromSdk)' != 'false'">
-    <ImportNuGetBuildTasksPackTargetsFromSdk>true</ImportNuGetBuildTasksPackTargetsFromSdk>
-  </PropertyGroup>
-
-  <Import Project="$(MSBuildExtensionsPath)\Sdks\NuGet.Build.Tasks.Pack\build\NuGet.Build.Tasks.Pack.targets"
-    Condition="'$(ImportNuGetBuildTasksPackTargetsFromSdk)' == 'true'" />
-
 </Project>
