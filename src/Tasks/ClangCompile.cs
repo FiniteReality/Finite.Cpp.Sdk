@@ -15,6 +15,12 @@ namespace Finite.Cpp.Sdk
     public class ClangCompile : ToolTask
     {
         /// <summary>
+        /// Gets or sets whether debugging symbols are enabled.
+        /// </summary>
+        [Required]
+        public bool EnableDebugSymbols { get; set; }
+
+        /// <summary>
         /// Gets or sets the include directories to use.
         /// </summary>
         public ITaskItem[] IncludeDirectories { get; set; } = null!;
@@ -24,6 +30,21 @@ namespace Finite.Cpp.Sdk
         /// library.
         /// </summary>
         public string LibraryType { get; set; } = null!;
+
+        /// <summary>
+        /// Gets or sets whether optimizations are enabled.
+        /// </summary>
+        /// <value></value>
+        [Required]
+        public bool Optimize { get; set; }
+
+        /// <summary>
+        /// Gets or sets the optimization level, where 0 is disabled. If
+        /// <see cref="Optimize"/> is <c>false</c>, the value of this option is
+        /// ignored.
+        /// </summary>
+        [Required]
+        public int OptimizeLevel { get; set; }
 
         /// <summary>
         /// Gets or sets the output file directory after compilation, if
@@ -99,6 +120,13 @@ namespace Finite.Cpp.Sdk
                     Log.LogError($"Unknown output type {OutputType}");
                     return null!;
             }
+
+            if (EnableDebugSymbols)
+                builder.AppendSwitch("--debug");
+
+            if (Optimize && OptimizeLevel > 0)
+                builder.AppendSwitchIfNotNull(
+                    $"--optimize=", OptimizeLevel.ToString());
 
             builder.AppendSwitch("--compile");
             builder.AppendFileNameIfNotNull(SourceFile);
