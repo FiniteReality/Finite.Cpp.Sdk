@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+
+    <AssemblyName>Finite.Cpp.Build.Tasks</AssemblyName>
+    <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Finite.Cpp.Sdk</PackageId>
+    <PackageType>MSBuildSdk</PackageType>
+
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Build.Utilities.Core" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="sdk\**\*" Pack="true" PackagePath="Sdk" />
+    <None Include="targets\**\*" Pack="true" PackagePath="targets" />
+  </ItemGroup>
+
+  <Target Name="ClearNuGetCache" AfterTargets="AfterBuild">
+    <RemoveDir Directories="$(BaseArtifactsPath)\nugetcache" />
+  </Target>
+</Project>

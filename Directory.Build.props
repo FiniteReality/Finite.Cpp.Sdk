@@ -46,11 +46,6 @@
     <VersionSuffix>alpha</VersionSuffix>
   </PropertyGroup>
 
-  <!-- Default settings that explicitly differ from the NuGet.Build.Tasks.Pack.targets defaults-->
-  <PropertyGroup>
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
-
   <!-- Default settings that are otherwise undefined -->
   <PropertyGroup>
     <Copyright>Copyright © Monica S.</Copyright>
