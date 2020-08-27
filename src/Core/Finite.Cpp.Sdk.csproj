@@ -2,8 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net5.0</TargetFrameworks>
-    <TargetFrameworks Condition="'$(OS)' == 'Windows_NT'">net472</TargetFrameworks>
+    <TargetFrameworks>net5.0;net472</TargetFrameworks>
 
     <AssemblyName>Finite.Cpp.Build.Tasks</AssemblyName>
     <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
@@ -26,4 +25,5 @@
   <Target Name="ClearNuGetCache" AfterTargets="AfterBuild">
     <RemoveDir Directories="$(BaseArtifactsPath)\nugetcache" />
   </Target>
+
 </Project>

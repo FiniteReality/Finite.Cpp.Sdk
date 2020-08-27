@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace Finite.Cpp.Sdk
+namespace Finite.Cpp.Build.Tasks
 {
     /// <summary>
     /// Helpers for reading the PATH environment variable.

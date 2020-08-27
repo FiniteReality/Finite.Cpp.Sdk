@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-namespace Finite.Cpp.Sdk
+namespace Finite.Cpp.Build.Tasks
 {
     /// <summary>
     /// Links one or more C/C++ object files into an application or library.

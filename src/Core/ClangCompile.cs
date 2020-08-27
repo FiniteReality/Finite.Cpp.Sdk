@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-namespace Finite.Cpp.Sdk
+namespace Finite.Cpp.Build.Tasks
 {
     /// <summary>
     /// Compiles an input C or C++ source file into an object file suitable for
