@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <!--
+    Set default configuration and platform to Debug|Native, since AnyCPU
+    doesn't make sense for us.
+  -->
+  <PropertyGroup>
+    <Configurations Condition="'$(Configurations)' == ''">Debug;Release</Configurations>
+    <Platforms Condition="'$(Platforms)' == ''">Native</Platforms>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">Native</Platform>
+  </PropertyGroup>
+
+  <!--
+    Specify default configuration properties for debugging symbols, etc.
+  -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DebugSymbols Condition="'$(DebugSymbols)' == ''">true</DebugSymbols>
+    <Optimize Condition="'$(Optimize)' == ''">false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <Optimize Condition="'$(Optimize)' == ''">true</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == ''">false</TreatWarningsAsErrors>
+    <DebugSymbols Condition="'$(DebugSymbols)' == ''">false</DebugSymbols>
+    <OptimizeLevel Condition="'$(OptimizeLevel)' == ''">0</OptimizeLevel>
+  </PropertyGroup>
+
   <Import Project="$(MSBuildThisFileDirectory)Finite.Cpp.Sdk.DefaultItems.props" />
 
 </Project>

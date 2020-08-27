@@ -119,4 +119,12 @@
     </ItemGroup>
   </Target>
 
+  <ItemGroup>
+    <ProjectCapability Remove="AssemblyReferences" />
+    <ProjectCapability Remove="ReferenceManagerAssemblies" />
+    <ProjectCapability Include="VisualC" Condition="'$(OS)' == 'Windows_NT'" />
+    <ProjectCapability Include="CrossPlatformExecutable" />
+    <ProjectCapability Include="ReferencesFolder" />
+  </ItemGroup>
+
 </Project>
