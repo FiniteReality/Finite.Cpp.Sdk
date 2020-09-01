@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+  <ItemDefinitionGroup>
+    <AdditionalIncludeDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </AdditionalIncludeDirectory>
+  </ItemDefinitionGroup>
+
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'true'">
     <Compile Include="**/*$(DefaultLanguageSourceExtension)" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
     <Link Include="@(Compile->'$(IntermediateOutputPath)%(FileName)$(DefaultIntermediateExtension)')" />

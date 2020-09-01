@@ -12,4 +12,8 @@
     <TargetArchitectures>x86;x64;arm7a</TargetArchitectures>
   </PropertyGroup>
 
+  <ItemGroup>
+    <AdditionalIncludeDirectory Include="../include/HelloWorldLibraryC" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

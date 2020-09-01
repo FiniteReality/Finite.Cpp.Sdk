@@ -51,6 +51,37 @@
   <Target Name="CreateManifestResourceNames" />
 
   <PropertyGroup>
+    <GetCopyToOutputDirectoryItemsDependsOn>
+      $(GetCopyToOutputDirectoryItemsDependsOn);
+      GetAdditionalIncludeDirectoryCopyToOutputDirectoryItems;
+    </GetCopyToOutputDirectoryItemsDependsOn>
+  </PropertyGroup>
+
+  <Target Name="GetAdditionalIncludeDirectoryCopyToOutputDirectoryItems">
+    <MSBuild
+      BuildInParallel="$(BuildInParallel)"
+      Projects="$(MSBuildProjectFile)"
+      Properties="_AdditionalIncludeDir=%(AdditionalIncludeDirectory.FullPath);_CopyToOutputDir=%(AdditionalIncludeDirectory.CopyToOutputDirectory);"
+      Targets="_FindAdditionalIncludeFiles">
+      <Output TaskParameter="TargetOutputs" ItemName="_ThisProjectItemsToCopyToOutputDirectory" />
+    </MSBuild>
+  </Target>
+
+  <Target Name="_FindAdditionalIncludeFiles" Returns="@(_AdditionalIncludeFileWithTargetPath)">
+    <ItemGroup Condition="'$(_AdditionalIncludeDir)' != ''">
+      <_AdditionalIncludeFile Include="$(_AdditionalIncludeDir)/**/*.*" CopyToOutputDirectory="$(_CopyToOutputDir)" />
+    </ItemGroup>
+
+    <!--
+      N.B. use the `..` here to get to the parent directory, since 90% of the
+      time users will want the directory, not a slew of files.
+    -->
+    <AssignTargetPath Files="@(_AdditionalIncludeFile)" RootFolder="$(_AdditionalIncludeDir)/..">
+      <Output TaskParameter="AssignedFiles" ItemName="_AdditionalIncludeFileWithTargetPath" />
+    </AssignTargetPath>
+  </Target>
+
+  <PropertyGroup>
     <CompileDependsOn>
       $(CompileDependsOn)
       BeforeLink;
