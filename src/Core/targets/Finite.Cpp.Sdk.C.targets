@@ -4,7 +4,6 @@
   <PropertyGroup>
     <DefaultProjectTypeGuid Condition="'$(DefaultProjectTypeGuid)' == ''">{F696B764-8749-4125-AB65-AF945699AF34}</DefaultProjectTypeGuid>
     <DefaultLanguageSourceExtension>.c</DefaultLanguageSourceExtension>
-    <DefaultIntermediateExtension>.o</DefaultIntermediateExtension>
     <Language>C</Language>
     <TargetRuntime>Unmanaged</TargetRuntime>
   </PropertyGroup>

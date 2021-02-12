@@ -97,7 +97,7 @@ namespace Finite.Cpp.Build.Tasks
 
             var builder = new CommandLineBuilder();
 
-            builder.AppendSwitchIfNotNull("--include-directory",
+            builder.AppendSwitchIfNotNull("--include-directory=",
                 IncludeDirectories, " ");
 
             switch (OutputType)
@@ -127,7 +127,7 @@ namespace Finite.Cpp.Build.Tasks
 
             if (Optimize && OptimizeLevel > 0)
                 builder.AppendSwitchIfNotNull(
-                    $"--optimize=", OptimizeLevel.ToString());
+                    "--optimize=", OptimizeLevel.ToString());
 
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 builder.AppendSwitch("-fvisibility=hidden");

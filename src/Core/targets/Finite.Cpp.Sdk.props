@@ -23,7 +23,12 @@
     <Optimize Condition="'$(Optimize)' == ''">true</Optimize>
   </PropertyGroup>
 
+  <!--
+    Specify fallback properties when no values have been provided by the consumer.
+  -->
   <PropertyGroup>
+    <DebugType Condition="'$(DebugType)' == 'none'">full</DebugType>
+
     <TreatWarningsAsErrors Condition="'$(TreatWarningsAsErrors)' == ''">false</TreatWarningsAsErrors>
     <DebugSymbols Condition="'$(DebugSymbols)' == ''">false</DebugSymbols>
     <OptimizeLevel Condition="'$(OptimizeLevel)' == ''">0</OptimizeLevel>

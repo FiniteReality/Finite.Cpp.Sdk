@@ -13,4 +13,8 @@
     <ProjectReference Include="../HelloWorldLibraryC/HelloWorldLibrary.cproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AdditionalIncludeDirectory Include="../include/HelloWorldLibraryC" />
+  </ItemGroup>
+
 </Project>

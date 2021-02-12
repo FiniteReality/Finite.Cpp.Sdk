@@ -10,7 +10,7 @@
 
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'true'">
     <Compile Include="**/*$(DefaultLanguageSourceExtension)" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
-    <Link Include="@(Compile->'$(IntermediateOutputPath)%(FileName)$(DefaultIntermediateExtension)')" />
+    <Link Include="@(Compile->'$(IntermediateOutputPath)%(RecursiveDir)%(FileName)$(IntermediateExt)')" />
   </ItemGroup>
 
 </Project>

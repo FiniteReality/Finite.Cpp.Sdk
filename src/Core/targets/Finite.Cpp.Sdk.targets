@@ -6,6 +6,15 @@
   </PropertyGroup>
 
   <!--
+    Specify default intermediate (compiler output) extensions.
+  -->
+  <PropertyGroup Condition="'$(IntermediateExt)' == ''">
+    <IntermediateExt Condition="'$(OS)' == 'Windows_NT'">.obj</IntermediateExt>
+    <IntermediateExt Condition="'$(OS)' == 'OSX'">.o</IntermediateExt>
+    <IntermediateExt Condition="'$(OS)' == 'Unix'">.o</IntermediateExt>
+  </PropertyGroup>
+
+  <!--
     Since we're overriding Microsoft.Common.CurrentVersion.targets, we have to
     check that the user didn't intentionally override them beforehand somehow.
     $(_OverridenTargetExt) will be true if TargetExt was set *before* importing
@@ -99,12 +108,12 @@
 
     <ClangCompile
       EnableDebugSymbols="$(DebugSymbols)"
-      IncludeDirectories="@(IncludeDirectories)"
+      IncludeDirectories="@(AdditionalIncludeDirectory)"
       LibraryType="$(LibraryType)"
       Optimize="$(Optimize)"
       OptimizeLevel="$(OptimizeLevel)"
       OutputDirectory="$(IntermediateOutputPath)"
-      OutputFileExtension="$(DefaultIntermediateExtension)"
+      OutputFileExtension="$(IntermediateExt)"
       OutputType="$(OutputType)"
       SourceFile="%(Compile.FullPath)">
       <Output TaskParameter="OutputFile" ItemName="FileWrites" />
@@ -131,11 +140,6 @@
       <Output TaskParameter="OutputFiles" ItemName="FileWrites" />
       <Output TaskParameter="OutputFiles" ItemName="_LinkOutputs" />
     </ClangLink>
-
-    <ItemGroup>
-      <DebugSymbolsProjectOutputGroup Include="@(_LinkOutputs)" Condition="'%(_LinkOutputs.Extension)' == '.pdb'" />
-      <IntermediateAssembly Include="@(_LinkOutputs)" Condition="'%(_LinkOutputs.Extension)' == '.lib'" />
-    </ItemGroup>
   </Target>
 
   <Target Name="BeforeLink" />
