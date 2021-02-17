@@ -4,6 +4,6 @@
 
 int main()
 {
-    printf("%s", get_hello_string());
+    printf("%s\nThis is: C application\n", get_hello_string());
     return 0;
 }

@@ -26,6 +26,12 @@ namespace Finite.Cpp.Build.Tasks
         public ITaskItem[] IncludeDirectories { get; set; } = null!;
 
         /// <summary>
+        /// Gets or sets the language to compile <see cref="SourceFile"/> as.
+        /// </summary>
+        [Required]
+        public string Language { get; set; } = null!;
+
+        /// <summary>
         /// Gets or sets the library type if <see cref="OutputType"/> is a
         /// library.
         /// </summary>
@@ -97,8 +103,14 @@ namespace Finite.Cpp.Build.Tasks
 
             var builder = new CommandLineBuilder();
 
-            builder.AppendSwitchIfNotNull("--include-directory=",
-                IncludeDirectories, " ");
+            if (IncludeDirectories != null)
+            {
+                foreach (var includeDirectory in IncludeDirectories)
+                {
+                    builder.AppendSwitchIfNotNull("--include-directory=",
+                        includeDirectory);
+                }
+            }
 
             switch (OutputType)
             {
@@ -133,6 +145,12 @@ namespace Finite.Cpp.Build.Tasks
                 builder.AppendSwitch("-fvisibility=hidden");
 
             builder.AppendSwitch("--compile");
+
+            // the languages we care about all have lowercase names:
+            // https://github.com/llvm/llvm-project/blob/main/clang/include/clang/Driver/Types.def
+            builder.AppendSwitchIfNotNull("--language=",
+                Language.ToLowerInvariant());
+
             builder.AppendFileNameIfNotNull(SourceFile);
             builder.AppendSwitchIfNotNull("--output=", OutputFile);
 

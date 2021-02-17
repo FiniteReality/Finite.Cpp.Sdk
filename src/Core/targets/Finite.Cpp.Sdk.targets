@@ -109,6 +109,7 @@
     <ClangCompile
       EnableDebugSymbols="$(DebugSymbols)"
       IncludeDirectories="@(AdditionalIncludeDirectory)"
+      Language="$(Language)"
       LibraryType="$(LibraryType)"
       Optimize="$(Optimize)"
       OptimizeLevel="$(OptimizeLevel)"
@@ -127,6 +128,7 @@
 
     <ClangLink
       EnableDebugSymbols="$(DebugSymbols)"
+      Language="$(Language)"
       LibraryType="$(LibraryType)"
       LinkLibraries="@(ReferencePath)"
       Optimize="$(Optimize)"

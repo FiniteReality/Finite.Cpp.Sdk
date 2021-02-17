@@ -4,7 +4,7 @@
   <PropertyGroup>
     <DefaultProjectTypeGuid Condition="'$(DefaultProjectTypeGuid)' == ''">{777B85CC-1368-4511-B971-867BABC9623A}</DefaultProjectTypeGuid>
     <DefaultLanguageSourceExtension>.cpp</DefaultLanguageSourceExtension>
-    <Language>CXX</Language>
+    <Language>C++</Language>
     <TargetRuntime>Unmanaged</TargetRuntime>
   </PropertyGroup>
 

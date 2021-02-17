@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{F696B764-8749-4125-AB65-AF945699AF34}") = "HelloWorld", "HelloWorldC\HelloWorld.cproj", "{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}"
+Project("{F696B764-8749-4125-AB65-AF945699AF34}") = "HelloWorldC", "HelloWorldC\HelloWorldC.cproj", "{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}"
+EndProject
+Project("{777B85CC-1368-4511-B971-867BABC9623A}") = "HelloWorldCpp", "HelloWorldCpp\HelloWorldCpp.cxxproj", "{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +32,17 @@ Global
 		{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}.Release|x64.Build.0 = Debug|Native
 		{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}.Release|x86.ActiveCfg = Debug|Native
 		{EFA74B0E-CB70-4A09-B2C8-89818B6483F2}.Release|x86.Build.0 = Debug|Native
+		{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}.Debug|Native.ActiveCfg = Debug|Native
+		{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}.Debug|Native.Build.0 = Debug|Native
+		{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}.Debug|x64.ActiveCfg = Debug|Native
+		{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}.Debug|x64.Build.0 = Debug|Native
+		{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}.Debug|x86.ActiveCfg = Debug|Native
+		{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}.Debug|x86.Build.0 = Debug|Native
+		{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}.Release|Native.ActiveCfg = Release|Native
+		{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}.Release|Native.Build.0 = Release|Native
+		{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}.Release|x64.ActiveCfg = Release|Native
+		{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}.Release|x64.Build.0 = Release|Native
+		{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}.Release|x86.ActiveCfg = Release|Native
+		{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}.Release|x86.Build.0 = Release|Native
 	EndGlobalSection
 EndGlobal

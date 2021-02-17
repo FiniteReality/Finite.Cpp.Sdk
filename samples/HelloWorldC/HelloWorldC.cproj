@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../HelloWorldLibraryC/HelloWorldLibrary.cproj" />
+    <ProjectReference Include="../HelloWorldLibraryC/HelloWorldLibraryC.cproj" />
   </ItemGroup>
 
   <ItemGroup>

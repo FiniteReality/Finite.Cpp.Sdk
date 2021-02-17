@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Finite.Cpp.Sdk/0.3.0-alpha">
+
+  <PropertyGroup>
+    <OutputType>library</OutputType>
+    <LibraryType>shared</LibraryType>
+
+    <!-- Use C11 as the language version for this project -->
+    <LanguageVersion>c11</LanguageVersion>
+
+    <!-- Specify what architectures this code supports -->
+    <TargetArchitectures>x86;x64;arm7a</TargetArchitectures>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../HelloWorldLibraryC/HelloWorldLibraryC.cproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalIncludeDirectory Include="../include/HelloWorldLibraryC" />
+    <AdditionalIncludeDirectory Include="../include/HelloWorldLibraryCpp" />
+  </ItemGroup>
+
+</Project>

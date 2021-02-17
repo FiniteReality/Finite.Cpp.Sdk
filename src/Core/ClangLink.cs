@@ -19,6 +19,12 @@ namespace Finite.Cpp.Build.Tasks
         public bool EnableDebugSymbols { get; set; }
 
         /// <summary>
+        /// Gets or sets the language to link <see cref="SourceFiles"/> as.
+        /// </summary>
+        [Required]
+        public string Language { get; set; } = null!;
+
+        /// <summary>
         /// Gets or sets the library type if <see cref="OutputType"/> is a
         /// library.
         /// </summary>
@@ -196,6 +202,12 @@ namespace Finite.Cpp.Build.Tasks
                         builder.AppendSwitchIfNotNull("-l:",
                             Path.GetFileName(linkLibrary.ItemSpec));
                 }
+            }
+
+            if (Language == "C++")
+            {
+                builder.AppendSwitch("-lstdc++");
+                builder.AppendSwitch("-lm");
             }
 
             if (EnableDebugSymbols)
