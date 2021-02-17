@@ -106,18 +106,47 @@
     Inputs="$(MSBuildAllProjects);@(Compile);"
     Outputs="@(Link)">
 
+    <ItemGroup>
+      <_CompileOneFile Include="$(MSBuildProjectFullPath)">
+        <Properties>
+          _CompileOneFileEnableDebugSymbols=$(DebugSymbols);
+          _CompileOneFileIncludeDirectories=@(AdditionalIncludeDirectory);
+          _CompileOneFileLanguage=$(Language);
+          _CompileOneFileLanguageVersion=$(LanguageVersion);
+          _CompileOneFileLibraryType=$(LibraryType);
+          _CompileOneFileOptimize=$(Optimize);
+          _CompileOneFileOptimizeLevel=$(OptimizeLevel);
+          _CompileOneFileOutputType=$(OutputType);
+          _CompileOneFileInput=%(Compile.FullPath);
+          _CompileOneFileOutput=$(IntermediateOutputPath)%(Compile.RecursiveDir)%(Compile.FileName)$(IntermediateExt);
+        </Properties>
+      </_CompileOneFile>
+    </ItemGroup>
+
+    <MSBuild
+      Projects="@(_CompileOneFile)"
+      Targets="_CoreCompileOneFile"
+      BuildInParallel="$(BuildInParallel)">
+      <Output TaskParameter="TargetOutputs" ItemName="FileWrites" />
+    </MSBuild>
+  </Target>
+
+  <Target Name="_CoreCompileOneFile"
+    Inputs="$(_CompileOneFileInput)"
+    Outputs="$(_CompileOneFileOutput)"
+    Returns="@(FileWrites)">
     <ClangCompile
-      EnableDebugSymbols="$(DebugSymbols)"
-      IncludeDirectories="@(AdditionalIncludeDirectory)"
-      Language="$(Language)"
-      LibraryType="$(LibraryType)"
-      Optimize="$(Optimize)"
-      OptimizeLevel="$(OptimizeLevel)"
-      OutputDirectory="$(IntermediateOutputPath)"
-      OutputFileExtension="$(IntermediateExt)"
-      OutputType="$(OutputType)"
-      SourceFile="%(Compile.FullPath)">
-      <Output TaskParameter="OutputFile" ItemName="FileWrites" />
+      EnableDebugSymbols="$(_CompileOneFileEnableDebugSymbols)"
+      IncludeDirectories="$(_CompileOneFileIncludeDirectories)"
+      Language="$(_CompileOneFileLanguage)"
+      LanguageVersion="$(_CompileOneFileLanguageVersion)"
+      LibraryType="$(_CompileOneFileLibraryType)"
+      Optimize="$(_CompileOneFileOptimize)"
+      OptimizeLevel="$(_CompileOneFileOptimizeLevel)"
+      OutputFile="$(_CompileOneFileOutput)"
+      OutputType="$(_CompileOneFileOutputType)"
+      SourceFile="$(_CompileOneFileInput)">
+      <Output TaskParameter="FileWrites" ItemName="FileWrites" />
     </ClangCompile>
   </Target>
 
@@ -129,18 +158,16 @@
     <ClangLink
       EnableDebugSymbols="$(DebugSymbols)"
       Language="$(Language)"
+      LanguageVersion="$(LanguageVersion)"
       LibraryType="$(LibraryType)"
       LinkLibraries="@(ReferencePath)"
       Optimize="$(Optimize)"
       OptimizeLevel="$(OptimizeLevel)"
-      OutputDirectory="$(IntermediateOutputPath)"
       OutputFile="@(IntermediateAssembly)"
-      OutputFileExtension="$(TargetExt)"
       OutputType="$(OutputType)"
       SourceFiles="@(Link)">
       <Output TaskParameter="OutputFile" ItemName="FileWrites" />
-      <Output TaskParameter="OutputFiles" ItemName="FileWrites" />
-      <Output TaskParameter="OutputFiles" ItemName="_LinkOutputs" />
+      <Output TaskParameter="FileWrites" ItemName="FileWrites" />
     </ClangLink>
   </Target>
 

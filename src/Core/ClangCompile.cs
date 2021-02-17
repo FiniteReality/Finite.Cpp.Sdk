@@ -32,6 +32,13 @@ namespace Finite.Cpp.Build.Tasks
         public string Language { get; set; } = null!;
 
         /// <summary>
+        /// Gets or sets the language version to compile
+        /// <see cref="SourceFile"/> as.
+        /// </summary>
+        [Required]
+        public string LanguageVersion { get; set; } = null!;
+
+        /// <summary>
         /// Gets or sets the library type if <see cref="OutputType"/> is a
         /// library.
         /// </summary>
@@ -53,22 +60,17 @@ namespace Finite.Cpp.Build.Tasks
         public int OptimizeLevel { get; set; }
 
         /// <summary>
-        /// Gets or sets the output file directory after compilation, if
-        /// <see cref="OutputFile"/> is <c>null</c>.
-        /// </summary>
-        public string OutputDirectory { get; set; } = null!;
-
-        /// <summary>
         /// Gets or sets the output file after compilation.
         /// </summary>
-        [Output]
+        [Required, Output]
         public ITaskItem OutputFile { get; set; } = null!;
 
         /// <summary>
-        /// Gets or sets the output file extension, if <see cref="OutputFile"/>
-        /// is <c>null</c>.
+        /// Gets or sets the files written when this task is executed.
         /// </summary>
-        public string OutputFileExtension { get; set; } = null!;
+        [Output]
+        public ITaskItem[] FileWrites { get; set; } = null!;
+
 
         /// <summary>
         /// Gets or sets the output file type.
@@ -86,21 +88,26 @@ namespace Finite.Cpp.Build.Tasks
         /// <inheritdoc />
         protected override string ToolName => "clang";
 
+        /// <inheritdoc/>
+        protected override int ExecuteTool(string pathToTool,
+            string responseFileCommands, string commandLineCommands)
+        {
+            Log.LogMessage($"OutputFile = {OutputFile}");
+
+            var directory = Path.GetDirectoryName(OutputFile.ItemSpec);
+            if (!string.IsNullOrEmpty(directory))
+                _ = Directory.CreateDirectory(directory);
+
+            var result = base.ExecuteTool(pathToTool, responseFileCommands, commandLineCommands);
+
+            FileWrites = new[] { OutputFile };
+
+            return result;
+        }
+
         /// <inheritdoc />
         protected override string GenerateCommandLineCommands()
         {
-            if (OutputFile == null && OutputFileExtension != null)
-            {
-                OutputFile = new TaskItem(
-                    Path.ChangeExtension(
-                        Path.Combine(
-                            OutputDirectory,
-                            Path.GetFileName(SourceFile.ItemSpec)),
-                        OutputFileExtension));
-
-                Log.LogMessage($"OutputFile = {OutputFile}");
-            }
-
             var builder = new CommandLineBuilder();
 
             if (IncludeDirectories != null)
@@ -150,6 +157,9 @@ namespace Finite.Cpp.Build.Tasks
             // https://github.com/llvm/llvm-project/blob/main/clang/include/clang/Driver/Types.def
             builder.AppendSwitchIfNotNull("--language=",
                 Language.ToLowerInvariant());
+
+            builder.AppendSwitchIfNotNull("--std=",
+                LanguageVersion.ToLowerInvariant());
 
             builder.AppendFileNameIfNotNull(SourceFile);
             builder.AppendSwitchIfNotNull("--output=", OutputFile);

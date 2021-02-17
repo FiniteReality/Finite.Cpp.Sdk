@@ -25,6 +25,13 @@ namespace Finite.Cpp.Build.Tasks
         public string Language { get; set; } = null!;
 
         /// <summary>
+        /// Gets or sets the language version to link <see cref="SourceFiles"/>
+        /// as.
+        /// </summary>
+        [Required]
+        public string LanguageVersion { get; set; } = null!;
+
+        /// <summary>
         /// Gets or sets the library type if <see cref="OutputType"/> is a
         /// library.
         /// </summary>
@@ -51,28 +58,16 @@ namespace Finite.Cpp.Build.Tasks
         public int OptimizeLevel { get; set; }
 
         /// <summary>
-        /// Gets or sets the output file directory after linking, if
-        /// <see cref="OutputFile"/> is <c>null</c>.
+        /// Gets or sets the primary output file after linking.
         /// </summary>
-        public string OutputDirectory { get; set; } = null!;
-
-        /// <summary>
-        /// Gets or sets the output file after linking.
-        /// </summary>
-        [Output]
+        [Required, Output]
         public ITaskItem OutputFile { get; set; } = null!;
 
         /// <summary>
-        /// Gets or sets the additional output files after compilation.
+        /// Gets or sets the files written when this task is executed.
         /// </summary>
         [Output]
-        public ITaskItem[] OutputFiles { get; set; } = null!;
-
-        /// <summary>
-        /// Gets or sets the output file extension, if <see cref="OutputFile"/>
-        /// is <c>null</c>.
-        /// </summary>
-        public string OutputFileExtension { get; set; } = null!;
+        public ITaskItem[] FileWrites { get; set; } = null!;
 
         /// <summary>
         /// Gets or sets the output file type.
@@ -92,11 +87,13 @@ namespace Finite.Cpp.Build.Tasks
         /// <inheritdoc/>
         protected override int ExecuteTool(string pathToTool, string responseFileCommands, string commandLineCommands)
         {
+            Log.LogMessage($"OutputFile = {OutputFile}");
+
             var result = base.ExecuteTool(pathToTool, responseFileCommands, commandLineCommands);
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                OutputFiles = new[]
+                FileWrites = new[]
                 {
                     new TaskItem(Path.ChangeExtension(OutputFile.ItemSpec, "lib"),
                         new Dictionary<string, string>
@@ -119,26 +116,6 @@ namespace Finite.Cpp.Build.Tasks
         /// <inheritdoc />
         protected override string GenerateCommandLineCommands()
         {
-            if (OutputFile == null)
-            {
-                if (OutputDirectory == null)
-                {
-                    Log.LogError(
-                        "Either OutputFile or OutputDirectory needs to be " +
-                        "set");
-                    return null!;
-                }
-
-                OutputFile = new TaskItem(
-                    Path.ChangeExtension(
-                        Path.Combine(
-                            OutputDirectory,
-                            Path.GetFileName(SourceFiles[0].ItemSpec)),
-                        OutputFileExtension));
-
-                Log.LogMessage($"OutputFile = {OutputFile}");
-            }
-
             var builder = new CommandLineBuilder();
 
             switch (OutputType)
