@@ -5,8 +5,8 @@
     <OutputType>library</OutputType>
     <LibraryType>shared</LibraryType>
 
-    <!-- Use C11 as the language version for this project -->
-    <LanguageVersion>c11</LanguageVersion>
+    <!-- Use C++11 as the language version for this project -->
+    <LanguageVersion>c++11</LanguageVersion>
 
     <!-- Specify what architectures this code supports -->
     <TargetArchitectures>x86;x64;arm7a</TargetArchitectures>
@@ -17,8 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AdditionalIncludeDirectory Include="../include/HelloWorldLibraryC" />
-    <AdditionalIncludeDirectory Include="../include/HelloWorldLibraryCpp" />
+    <AdditionalIncludeDirectory Include="include" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

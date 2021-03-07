@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AdditionalIncludeDirectory Include="../include/HelloWorldLibraryC" />
+    <AdditionalIncludeDirectory Include="include" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

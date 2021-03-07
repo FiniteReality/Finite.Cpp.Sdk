@@ -59,6 +59,18 @@
   <!-- Needed by Microsoft.Common.CurrentVersion.targets -->
   <Target Name="CreateManifestResourceNames" />
 
+  <!-- TODO: make this not depend on ResolveReferences -->
+  <Target Name="GetTargetPath" DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <TargetPathWithTargetPlatformMoniker Update="$(TargetPath)">
+        <IsFiniteCppSdk>true</IsFiniteCppSdk>
+        <CopyLocal>true</CopyLocal>
+        <IncludeDirectories>@(AdditionalIncludeDirectory->'%(FullPath)')</IncludeDirectories>
+      </TargetPathWithTargetPlatformMoniker>
+      <TargetPathWithTargetPlatformMoniker Include="@(ReferencePath)" />
+    </ItemGroup>
+  </Target>
+
   <PropertyGroup>
     <GetCopyToOutputDirectoryItemsDependsOn>
       $(GetCopyToOutputDirectoryItemsDependsOn);
@@ -107,10 +119,15 @@
     Outputs="@(Link)">
 
     <ItemGroup>
+      <_CompileOneFileIncludeDirectories Include="@(AdditionalIncludeDirectory)"/>
+      <_CompileOneFileIncludeDirectories Include="@(ReferencePath->'%(IncludeDirectories)')"/>
+    </ItemGroup>
+
+    <ItemGroup>
       <_CompileOneFile Include="$(MSBuildProjectFullPath)">
         <Properties>
           _CompileOneFileEnableDebugSymbols=$(DebugSymbols);
-          _CompileOneFileIncludeDirectories=@(AdditionalIncludeDirectory);
+          _CompileOneFileIncludeDirectories=@(_CompileOneFileIncludeDirectories);
           _CompileOneFileLanguage=$(Language);
           _CompileOneFileLanguageVersion=$(LanguageVersion);
           _CompileOneFileLibraryType=$(LibraryType);

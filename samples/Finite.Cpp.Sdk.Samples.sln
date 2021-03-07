@@ -7,6 +7,8 @@ Project("{F696B764-8749-4125-AB65-AF945699AF34}") = "HelloWorldC", "HelloWorldC\
 EndProject
 Project("{777B85CC-1368-4511-B971-867BABC9623A}") = "HelloWorldCpp", "HelloWorldCpp\HelloWorldCpp.cxxproj", "{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorldCSharp", "HelloWorldCSharp\HelloWorldCSharp.csproj", "{6082889A-797F-48A7-B388-E802613017B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Native = Debug|Native
@@ -44,5 +46,17 @@ Global
 		{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}.Release|x64.Build.0 = Release|Native
 		{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}.Release|x86.ActiveCfg = Release|Native
 		{1BA261E5-D6E4-427B-93C1-4E7081C26EEF}.Release|x86.Build.0 = Release|Native
+		{6082889A-797F-48A7-B388-E802613017B6}.Debug|Native.ActiveCfg = Debug|Any CPU
+		{6082889A-797F-48A7-B388-E802613017B6}.Debug|Native.Build.0 = Debug|Any CPU
+		{6082889A-797F-48A7-B388-E802613017B6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6082889A-797F-48A7-B388-E802613017B6}.Debug|x64.Build.0 = Debug|Any CPU
+		{6082889A-797F-48A7-B388-E802613017B6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6082889A-797F-48A7-B388-E802613017B6}.Debug|x86.Build.0 = Debug|Any CPU
+		{6082889A-797F-48A7-B388-E802613017B6}.Release|Native.ActiveCfg = Release|Any CPU
+		{6082889A-797F-48A7-B388-E802613017B6}.Release|Native.Build.0 = Release|Any CPU
+		{6082889A-797F-48A7-B388-E802613017B6}.Release|x64.ActiveCfg = Release|Any CPU
+		{6082889A-797F-48A7-B388-E802613017B6}.Release|x64.Build.0 = Release|Any CPU
+		{6082889A-797F-48A7-B388-E802613017B6}.Release|x86.ActiveCfg = Release|Any CPU
+		{6082889A-797F-48A7-B388-E802613017B6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

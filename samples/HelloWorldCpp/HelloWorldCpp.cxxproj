@@ -11,13 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="../HelloWorldLibraryCpp/HelloWorldLibraryCpp.cxxproj" />
-
-    <!-- TODO: transient references -->
-    <ProjectReference Include="../HelloWorldLibraryC/HelloWorldLibraryC.cproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AdditionalIncludeDirectory Include="../include/HelloWorldLibraryCpp" />
   </ItemGroup>
 
 </Project>
