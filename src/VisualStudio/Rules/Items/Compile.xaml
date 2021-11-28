@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Rule xmlns="http://schemas.microsoft.com/build/2009/properties"
+      Name="Compile"
+      PageTemplate="generic"
+      PropertyPagesHidden="True">
+
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="false"
+                ItemType="Compile"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
+
+  <DynamicEnumProperty Name="{}{ItemType}"
+                       EnumProvider="ItemTypes" />
+
+  <BoolProperty Name="Visible"
+                Visible="false" />
+</Rule>

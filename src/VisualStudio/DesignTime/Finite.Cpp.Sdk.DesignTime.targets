@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <DefineCommonItemSchemas>false</DefineCommonItemSchemas>
+    <DefineCommonCapabilities>false</DefineCommonCapabilities>
+    <DefineCommonReferenceSchemas>false</DefineCommonReferenceSchemas>
+
+    <SupportedOutputTypes Condition="'$(SupportedOutputTypes)' == ''">exe;library</SupportedOutputTypes>
+    <SuppressOutOfDateMessageOnBuild Condition="'$(SuppressOutOfDateMessageOnBuild)' == ''">true</SuppressOutOfDateMessageOnBuild>
+
+    <PackageAction Condition="'$(PackageAction)' == ''">Pack</PackageAction>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(FiniteCppSdkXamlResourcesDirectory)' == ''">
+    <FiniteCppSdkXamlResourcesDirectory>$(MSBuildThisFileDirectory)</FiniteCppSdkXamlResourcesDirectory>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <FiniteCppSdkXamlResourcesDirectory Condition="!HasTrailingSlash('$(FiniteCppSdkXamlResourcesDirectory)')">$(FiniteCppSdkXamlResourcesDirectory)\</FiniteCppSdkXamlResourcesDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectCapability Include="FiniteCppSdk" />
+
+    <ProjectCapability Include="UseFileGlobs" />
+    <ProjectCapability Include="DynamicDependentFile" />
+    <ProjectCapability Include="ConfigurableFileNesting" />
+
+    <ProjectCapability Include="
+                          ProjectReferences;
+                          OutputGroups;
+                          AllTargetOutputGroups;
+                          VisualStudioWellKnownOutputGroups;
+                          SingleFileGenerators;
+                          DeclaredSourceItems;
+                          UserSourceItems;
+                          SupportAvailableItemName;
+                          IntegratedConsoleDebugging;
+                          DisableBuiltInDebuggerServices;
+                          PersistDesignTimeDataOutOfProject;" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PropertyPageSchema Include="$(FiniteCppSdkXamlResourcesDirectory)Compile.xaml" Context="Project" />
+    <PropertyPageSchema Include="$(FiniteCppSdkXamlResourcesDirectory)Compile.BrowseObject.xaml" Context="BrowseObject" />
+  </ItemGroup>
+
+</Project>

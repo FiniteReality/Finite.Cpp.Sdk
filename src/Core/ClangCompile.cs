@@ -210,6 +210,9 @@ namespace Finite.Cpp.Build.Tasks
                     if (File.Exists(fullPath))
                         return fullPath;
                 }
+
+                Log.LogError($"Could not find {ToolName} executable");
+                return null!;
             }
 
 

@@ -8,4 +8,10 @@
     <TargetRuntime>Unmanaged</TargetRuntime>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <CPlusPlusDesignTimeTargetsPath Condition="'$(CPlusPlusDesignTimeTargetsPath)' == ''">$(MSBuildExtensionsPath)\FiniteCppSdk\Finite.Cpp.Sdk.CPlusPlus.DesignTime.targets</CPlusPlusDesignTimeTargetsPath>
+  </PropertyGroup>
+
+  <Import Project="$(CPlusPlusDesignTimeTargetsPath)" Condition="'$(CPlusPlusDesignTimeTargetsPath)' != '' and Exists('$(CPlusPlusDesignTimeTargetsPath)')" />
+
 </Project>
