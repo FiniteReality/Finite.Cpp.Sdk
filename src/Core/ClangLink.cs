@@ -183,8 +183,11 @@ namespace Finite.Cpp.Build.Tasks
 
             if (Language == "C++")
             {
-                builder.AppendSwitch("-lstdc++");
-                builder.AppendSwitch("-lm");
+                if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    builder.AppendSwitch("-lstdc++");
+                    builder.AppendSwitch("-lm");
+                }
             }
 
             if (EnableDebugSymbols)
@@ -245,6 +248,9 @@ namespace Finite.Cpp.Build.Tasks
                     if (File.Exists(fullPath))
                         return fullPath;
                 }
+
+                Log.LogError($"Could not find {ToolName} executable");
+                return null!;
             }
 
 

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Rule xmlns="http://schemas.microsoft.com/build/2009/properties"
+      Name="Compile"
+      Description="File Properties"
+      DisplayName="File Properties"
+      PageTemplate="generic"
+      PropertyPagesHidden="True">
+
+  <Rule.Categories>
+    <Category Name="Advanced"
+              DisplayName="Advanced" />
+    <Category Name="Misc"
+              DisplayName="Misc" />
+  </Rule.Categories>
+
+  <Rule.DataSource>
+    <DataSource HasConfigurationCondition="false"
+                ItemType="Compile"
+                Persistence="ProjectFile"
+                SourceOfDefaultValue="AfterContext" />
+  </Rule.DataSource>
+
+  <DynamicEnumProperty Name="{}{ItemType}"
+                       Category="Advanced"
+                       Description="How the file relates to the build and deployment processes."
+                       DisplayName="Build Action"
+                       EnumProvider="ItemTypes" />
+
+  <StringProperty Name="Identity"
+                  ReadOnly="true"
+                  Visible="false">
+    <StringProperty.DataSource>
+      <DataSource ItemType="Compile"
+                  PersistedName="Identity"
+                  Persistence="Intrinsic"
+                  SourceOfDefaultValue="AfterContext" />
+    </StringProperty.DataSource>
+  </StringProperty>
+
+  <BoolProperty Name="Visible"
+                Visible="false" />
+
+</Rule>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+
+  <PropertyGroup>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v16.0</VSToolsPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <SchemaVersion>2.0</SchemaVersion>
+    <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <UseCodebase>true</UseCodebase>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <StartAction>Program</StartAction>
+    <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
+    <StartArguments>/rootsuffix Exp /log</StartArguments>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="DesignTime\Finite.Cpp.Sdk.CPlusPlus.DesignTime.targets" />
+    <None Include="DesignTime\Finite.Cpp.Sdk.DesignTime.targets" />
+    <None Include="source.extension.vsixmanifest" SubType="Designer" />
+    <Content Include="Templates\**\*" IncludeInVSIX="true" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Sdk" />
+    <PackageReference Include="Microsoft.VisualStudio.ProjectSystem" />
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="DesignTime\**\*.targets" IncludeInVSIX="true" SubType="None" VSIXSubPath="FiniteCppSdk" InstallRoot="MSBuild" />
+    <Content Include="Rules\**\*.xaml" IncludeInVSIX="true" SubType="None" VSIXSubPath="FiniteCppSdk" InstallRoot="MSBuild" />
+  </ItemGroup>
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
+
+  <Target Name="CopyDesignTimeFiles" BeforeTargets="AfterBuild">
+    <ItemGroup>
+      <_DesignTimeFilesToCopy Include="@(Content)" Condition="'%(Content.InstallRoot)' == 'MSBuild'" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(_DesignTimeFilesToCopy)" DestinationFiles="@(_DesignTimeFilesToCopy->'$(OutputPath)/DesignTime/%(FileName)%(Extension)')" />
+  </Target>
+
+</Project>

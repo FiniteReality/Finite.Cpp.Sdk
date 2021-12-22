@@ -23,4 +23,10 @@
 
   <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.props" />
 
+  <!-- Default settings that are used for Visual Studio design-time builds -->
+  <PropertyGroup>
+    <VisualStudioDesignTimeFiles>$(BaseArtifactsPath)bin\src\Finite.Cpp.Sdk.VisualStudio\Debug\net472\DesignTime\</VisualStudioDesignTimeFiles>
+    <CPlusPlusDesignTimeTargetsPath>$(VisualStudioDesignTimeFiles)Finite.Cpp.Sdk.CPlusPlus.DesignTime.targets</CPlusPlusDesignTimeTargetsPath>
+  </PropertyGroup>
+
 </Project>
